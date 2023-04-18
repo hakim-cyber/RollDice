@@ -8,5 +8,6 @@
 import Foundation
 struct Dice:Identifiable,Codable,Equatable{
     var id = UUID()
-    let number:Int
+    let numbersArray:[Int]
+    
 }

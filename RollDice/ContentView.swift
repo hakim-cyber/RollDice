@@ -9,41 +9,78 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var diceNumber = 1
-    @State private var diceNumbersArray = [Int]()
+    @State  var diceNumbersArray = [1]
     
-    @State private var diceCount = 1
-    
-    @State private var diceType = 6
+    @State  var diceCount = 1
+    let dicecounts = Array(1...100)
+    @State  var diceType = 6
 
     @State var isChanging = false
     @State var rollsArray = [Dice]()
+    @State private var showSettings = false
+    @State var total = 0
     
     @State private var showHistory = false
+    
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
             NavigationView{
                 ZStack{
+                    
                     Color.background
                         .ignoresSafeArea()
                     VStack{
-                       RoundedRectangle(cornerRadius:  30)
+                        RoundedRectangle(cornerRadius: 15)
                             .fill(.white)
-                            .frame(width: 100,height: 100)
-                            .padding(100)
+                            .frame(width: 150,height: 50)
                             .overlay{
-                                Text("\(diceNumber)")
-                                    .font(.headline)
-                                    .bold()
+                                Text("Total :\(calculateTotal(for:diceNumbersArray))")
+                                    .font(.largeTitle)
                             }
-                           
+                            .padding(30)
+                        
+                        ScrollView{
+                            LazyVGrid(columns: columns){
+                                
+                                ForEach(diceNumbersArray.indices,id: \.self){index in
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .fill(.white)
+                                        .frame(width: 50, height: 50)
+                                        .overlay {
+                                            Text("\(diceNumbersArray[index])")
+                                        }
+                                }
+                                
+                                
+                                
+                                
+                            }
+                            .scaledToFill()
+                        }
+                    
                             
-                            
-                        Button("Roll"){
+                        Button{
+                            total = 0
                             loadRolls()
                             roll.startTimer()
                             save()
                            
+                        }label:{
+                            Text("Roll")
+                                .foregroundColor(.white)
+                                .font(.largeTitle)
+                                .frame(width:350,height:100)
+                                .background(.gray)
+                                .clipShape(Capsule())
+                                
                         }
+                       
+                     
                         
                     }
                     .onChange(of: rollsArray){_ in
@@ -54,19 +91,39 @@ struct ContentView: View {
                 .navigationTitle("RollDice")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear{
-                    self.roll = Roll(diceNumber: self.$diceNumber,rollsArray: self.$rollsArray)
+                  
+                    self.roll = Roll(diceNumberArray: self.$diceNumbersArray,rollsArray: self.$rollsArray, diceType: self.$diceType,total:self.$total)
+                }
+                .onChange(of: diceCount){newValue in
+                    diceNumbersArray = Array(repeating: 1, count: newValue)
+                }
+                .onChange(of: diceType){newValue in
+                    diceType = newValue
                 }
                 .toolbar{
+                    Button{
+                            showSettings = true
+                        
+                    }label: {
+                        Image(systemName: "transmission")
+                            .font(.largeTitle)
+                            .foregroundColor(.gray)
+                    }
                     Button{
                             showHistory = true
                         
                     }label: {
                         Image(systemName: "arrow.down.app.fill")
                             .font(.headline)
+                            
                     }
                 }
                 .sheet(isPresented: $showHistory){
                     Story()
+                        
+                }
+                .sheet(isPresented: $showSettings){
+                    SettingsView(diceType: $diceType, diceCount: $diceCount)
                         
                 }
                 
@@ -77,7 +134,7 @@ struct ContentView: View {
     func loadRolls(){
         let decoder = JSONDecoder()
         
-        if let data = UserDefaults.standard.data(forKey: "Rolls"){
+        if let data = UserDefaults.standard.data(forKey: "roll"){
             if let decoded = try? decoder.decode([Dice].self, from: data){
                 rollsArray = decoded
             }
@@ -86,9 +143,17 @@ struct ContentView: View {
     func save(){
            let encoder = JSONEncoder()
            if let encoded = try? encoder.encode(rollsArray){
-               UserDefaults.standard.set(encoded, forKey: "Rolls")
+               UserDefaults.standard.set(encoded, forKey: "roll")
            }
        }
+    func calculateTotal(for dice:[Int]) -> Int{
+        var total = 0
+        for number in dice{
+            total += number
+        }
+        return total
+        
+    }
     @State private var roll: Roll!
     
 }
@@ -113,34 +178,44 @@ struct ContentView_Previews: PreviewProvider {
 
 class Roll:ObservableObject{
     var timer:Timer?
-    @Binding var diceNumber:Int
+    @Binding var diceNumberArray:[Int]
     @Binding var rollsArray:[Dice]
+    @Binding var diceType:Int
+    @Binding var total:Int
     
     private var rollCount: Int = 0
         private let maxRollCount: Int = 6
     
-    init(diceNumber: Binding<Int>,rollsArray: Binding<[Dice]>) {
-           self._diceNumber = diceNumber
+    init(diceNumberArray: Binding<[Int]>,rollsArray: Binding<[Dice]>,diceType: Binding<Int>,total: Binding<Int>) {
+           self._diceNumberArray = diceNumberArray
+        self._diceType = diceType
+        self._total = total
         self._rollsArray = rollsArray
+        
         
        }
        
     func startTimer(){
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true){timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true){ [self]timer in
             withAnimation {
                 
-                
-                if self.rollCount < self.maxRollCount {
-                    self.diceNumber = Int.random(in: 1...6)
-                    self.rollCount += 1
-                } else {
-                    
-                    self.stop()
-                    let newroll = Dice(number: self.diceNumber)
-                    self.rollsArray.append(newroll)
-                    
+                for  i in 0..<diceNumberArray.count{
+               
+                    if self.rollCount < self.maxRollCount {
+                        diceNumberArray[i] = Int.random(in: 1...diceType)
+                       
+                        self.rollCount += 1
+                    } else {
+                        self.total += diceNumberArray[i]
+                        self.stop()
+                       
+                        
+                        
+                    }
                    
                 }
+                let newroll = Dice(numbersArray:  diceNumberArray)
+                self.rollsArray.append(newroll)
                
             }
             

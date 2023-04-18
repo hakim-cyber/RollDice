@@ -14,6 +14,7 @@
 		08260DEC29EDC9F5008175DE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08260DEB29EDC9F5008175DE /* Color.swift */; };
 		08260DEE29EDDA22008175DE /* dice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08260DED29EDDA22008175DE /* dice.swift */; };
 		08260DF029EDDECA008175DE /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08260DEF29EDDECA008175DE /* Story.swift */; };
+		088FF8EA29EF3E1F00700563 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FF8E929EF3E1F00700563 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		08260DEB29EDC9F5008175DE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		08260DED29EDDA22008175DE /* dice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dice.swift; sourceTree = "<group>"; };
 		08260DEF29EDDECA008175DE /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
+		088FF8E929EF3E1F00700563 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 		08260DD129EDC8C4008175DE = {
 			isa = PBXGroup;
 			children = (
+				088FF8E929EF3E1F00700563 /* SettingsView.swift */,
 				08260DEF29EDDECA008175DE /* Story.swift */,
 				08260DDC29EDC8C4008175DE /* RollDice */,
 				08260DDB29EDC8C4008175DE /* Products */,
@@ -149,6 +152,7 @@
 				08260DE029EDC8C4008175DE /* ContentView.swift in Sources */,
 				08260DDE29EDC8C4008175DE /* RollDiceApp.swift in Sources */,
 				08260DEE29EDDA22008175DE /* dice.swift in Sources */,
+				088FF8EA29EF3E1F00700563 /* SettingsView.swift in Sources */,
 				08260DEC29EDC9F5008175DE /* Color.swift in Sources */,
 				08260DF029EDDECA008175DE /* Story.swift in Sources */,
 			);

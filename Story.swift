@@ -14,9 +14,22 @@ struct Story: View {
             ZStack{
                 Color.background.ignoresSafeArea()
                 List(rolllsArray){roll in
-                    VStack{
-                        Text(String(roll.number))
-                        
+                    ScrollView(.horizontal){
+                        VStack(alignment: .leading){
+                            Text("Total:\(calculateTotal(for:roll))")
+                                .bold()
+                                .padding(0.5)
+                            HStack{
+                               
+                                ForEach(roll.numbersArray.indices,id:\.self) { index in
+                                    
+                                    
+                                    Text("\(roll.numbersArray[index])")
+                                    
+                                }
+                                
+                            }
+                        }
                     }
                     .listRowBackground(Color.background)
                 }
@@ -27,12 +40,21 @@ struct Story: View {
     func loadRolls(){
         let decoder = JSONDecoder()
         
-        if let data = UserDefaults.standard.data(forKey: "Rolls"){
+        if let data = UserDefaults.standard.data(forKey: "roll"){
             if let decoded = try? decoder.decode([Dice].self, from: data){
                 rolllsArray = decoded
             }
         }
     }
+    func calculateTotal(for dice:Dice) -> Int{
+        var total = 0
+        for number in dice.numbersArray{
+            total += number
+        }
+        return total
+        
+    }
+    
 }
 
 struct Story_Previews: PreviewProvider {
