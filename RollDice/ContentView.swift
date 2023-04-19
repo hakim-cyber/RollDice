@@ -55,16 +55,13 @@ struct ContentView: View {
                             LazyVGrid(columns: columns){
                                 
                                 ForEach(diceNumbersArray.indices,id: \.self){index in
-                                    
+                                    VStack{
                                     if diceNumbersArray[index] <= 6{
                                         Image("dice \(diceNumbersArray[index])")
                                             .resizable()
                                             .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .frame(width: 50, height: 50)
-                                        .rotation3DEffect(
-                                                       .degrees(rotation),
-                                                       axis: (x: 0.0, y: 1.0, z: 0.0)
-                                                   )
+                                       
                                         .padding()
                                         
                                         
@@ -73,16 +70,17 @@ struct ContentView: View {
                                             .fill(.white)
                                             .frame(width: 50, height: 50)
                                             .overlay {
-                                                    Text("\(diceNumbersArray[index])")
+                                                Text("\(diceNumbersArray[index])")
                                                     .foregroundColor(.black)
                                             }
-                                            .rotation3DEffect(
-                                                           .degrees(rotation),
-                                                           axis: (x: 0.0, y: 1.0, z: 0.0)
-                                                       )
+                                           
                                             .padding()
-                                            
                                     }
+                                    }
+                                    .rotation3DEffect(
+                                                   .degrees(rotation),
+                                                   axis: (x: 0.0, y: 1.0, z: 0.0)
+                                               )
                                 }
                                 
                                 
