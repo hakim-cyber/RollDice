@@ -15,25 +15,32 @@ struct SettingsView: View {
     let diceTypes = Array(6...100).filter{$0 % 2 == 0}
     var body: some View {
         NavigationView{
-            Form{
-                Picker("Dice count", selection: $diceCount){
+           
+                Form{
+                    Picker("Dice count", selection: $diceCount){
                         ForEach(dicecounts,id:\.self) { count in
-                        Text("\(count)")
+                            Text("\(count)")
                         }
                     }
-                Picker("Dice Type",selection: $diceCount){
-                    ForEach(diceTypes ,id:\.self){type in
-                        Text("\(type) Sided")
+                    .pickerStyle(.navigationLink)
+                    Picker("Dice Type",selection: $diceType){
+                        ForEach(diceTypes ,id:\.self){type in
+                            Text("\(type) Sided")
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+                    
+                }
+                
+                
+                .navigationTitle("Settings")
+                .toolbar{
+                    Button("Done"){
+                        dismiss()
                     }
                 }
                 
-            }
-            .navigationTitle("Settings")
-            .toolbar{
-                Button("Done"){
-                    dismiss()
-                }
-            }
+            
         }
     }
 }

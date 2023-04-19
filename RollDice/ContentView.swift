@@ -36,11 +36,15 @@ struct ContentView: View {
                         .ignoresSafeArea()
                     VStack{
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(.white)
-                            .frame(width: 150,height: 50)
+                            .fill(Color.Lightbackground)
+                            .frame(width: 350,height: 100)
                             .overlay{
                                 Text("Total :\(calculateTotal(for:diceNumbersArray))")
+                                    .scaledToFill()
                                     .font(.largeTitle)
+                                    .foregroundColor(.white)
+                                    .fixedSize()
+                                    .padding()
                             }
                             .padding(30)
                         
@@ -48,23 +52,39 @@ struct ContentView: View {
                             LazyVGrid(columns: columns){
                                 
                                 ForEach(diceNumbersArray.indices,id: \.self){index in
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(.white)
+                                    
+                                    if diceNumbersArray[index] <= 6{
+                                        Image("dice \(diceNumbersArray[index])")
+                                            .resizable()
+                                            .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .frame(width: 50, height: 50)
-                                        .overlay {
-                                            Text("\(diceNumbersArray[index])")
-                                        }
+                                        
+                                    }else{
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(.white)
+                                            .frame(width: 50, height: 50)
+                                            .overlay {
+                                                Text("\(diceNumbersArray[index])")
+                                                
+                                            }
+                                            
+                                    }
                                 }
                                 
                                 
                                 
                                 
                             }
+                            .padding()
                             .scaledToFill()
                         }
+                        .background(.regularMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .padding(.horizontal,20)
                     
                             
                         Button{
+                            isChanging = false
                             total = 0
                             loadRolls()
                             roll.startTimer()
@@ -97,25 +117,30 @@ struct ContentView: View {
                 .onChange(of: diceCount){newValue in
                     diceNumbersArray = Array(repeating: 1, count: newValue)
                 }
+                
                 .onChange(of: diceType){newValue in
                     diceType = newValue
                 }
                 .toolbar{
-                    Button{
+                    ToolbarItem(placement:.navigationBarTrailing){
+                        Button{
                             showSettings = true
-                        
-                    }label: {
-                        Image(systemName: "transmission")
-                            .font(.largeTitle)
-                            .foregroundColor(.gray)
-                    }
-                    Button{
-                            showHistory = true
-                        
-                    }label: {
-                        Image(systemName: "arrow.down.app.fill")
-                            .font(.headline)
                             
+                        }label: {
+                            Image(systemName: "gearshape.2.fill")
+                                .font(.largeTitle)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    ToolbarItem(placement:.navigationBarLeading){
+                        Button{
+                            showHistory = true
+                            
+                        }label: {
+                            Image(systemName: "arrow.down.app.fill")
+                                .font(.largeTitle)
+                            
+                        }
                     }
                 }
                 .sheet(isPresented: $showHistory){
@@ -196,7 +221,7 @@ class Roll:ObservableObject{
        }
        
     func startTimer(){
-        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true){ [self]timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true){ [self]timer in
             withAnimation {
                 
                 for  i in 0..<diceNumberArray.count{

@@ -30,9 +30,15 @@ struct Story: View {
                                 
                             }
                         }
+                        .padding()
+                        
                     }
+                    .background(Color.Lightbackground)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                   
                     .listRowBackground(Color.background)
                 }
+                .listStyle(.plain)
                 .onAppear(perform: loadRolls)
             }
         }

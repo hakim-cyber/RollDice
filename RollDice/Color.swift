@@ -9,5 +9,6 @@ import Foundation
 import SwiftUI
 
 extension Color{
-    static let background = Color(.red).opacity(0.7)
+    static let background = Color(.red)
+    static let Lightbackground = Color(.blue).opacity(0.2)
 }
