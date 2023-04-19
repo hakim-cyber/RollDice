@@ -17,27 +17,39 @@ struct SettingsView: View {
         NavigationView{
            
                 Form{
-                    Picker("Dice count", selection: $diceCount){
-                        ForEach(dicecounts,id:\.self) { count in
-                            Text("\(count)")
+                    Section{
+                        Picker("Dice count", selection: $diceCount){
+                            ForEach(dicecounts,id:\.self) { count in
+                                Text("\(count)")
+                            }
                         }
-                    }
-                    .pickerStyle(.navigationLink)
-                    Picker("Dice Type",selection: $diceType){
-                        ForEach(diceTypes ,id:\.self){type in
-                            Text("\(type) Sided")
+                        .pickerStyle(.navigationLink)
+                        
+                        Picker("Dice Type",selection: $diceType){
+                            ForEach(diceTypes ,id:\.self){type in
+                                Text("\(type) Sided")
+                            }
                         }
+                        .pickerStyle(.navigationLink)
                     }
-                    .pickerStyle(.navigationLink)
                     
+                  
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.background)
+                .listRowSeparatorTint(.blue)
+                
                 
                 
                 .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar{
                     Button("Done"){
                         dismiss()
                     }
+                    .foregroundColor(.blue)
+                    .bold()
+                   
                 }
                 
             
@@ -48,5 +60,6 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView(diceType: .constant(6), diceCount: Binding<Int>.constant(3))
+            
     }
 }

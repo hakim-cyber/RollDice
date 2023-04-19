@@ -13,7 +13,7 @@ struct Story: View {
         NavigationView{
             ZStack{
                 Color.background.ignoresSafeArea()
-                List(rolllsArray){roll in
+                List(rolllsArray.reversed()){roll in
                     ScrollView(.horizontal){
                         VStack(alignment: .leading){
                             Text("Total:\(calculateTotal(for:roll))")

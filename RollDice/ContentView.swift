@@ -32,7 +32,7 @@ struct ContentView: View {
     var body: some View {
             NavigationView{
                 ZStack{
-                    
+                   
                     Color.background
                         .ignoresSafeArea()
                     VStack{
@@ -65,13 +65,13 @@ struct ContentView: View {
                                                    )
                                         .padding()
                                         
+                                        
                                     }else{
                                         RoundedRectangle(cornerRadius: 15)
                                             .fill(.white)
                                             .frame(width: 50, height: 50)
                                             .overlay {
-                                                Text("\(diceNumbersArray[index])")
-                                                
+                                                    Text("\(diceNumbersArray[index])")
                                             }
                                             .rotation3DEffect(
                                                            .degrees(rotation),
@@ -101,7 +101,7 @@ struct ContentView: View {
                             roll.startTimer()
                             save()
                             
-                            withAnimation(Animation.linear(duration: 1.5)) {
+                            withAnimation(Animation.linear(duration: 1)) {
                                    rotation += 360
                                }
                            
@@ -164,6 +164,7 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showSettings){
                     SettingsView(diceType: $diceType, diceCount: $diceCount)
+                        .preferredColorScheme(.dark)
                         
                 }
                 
