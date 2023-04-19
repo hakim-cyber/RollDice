@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var diceNumber = 1
     @State  var diceNumbersArray = [1]
+    @State var rotation = 0.0
     
     @State  var diceCount = 1
     let dicecounts = Array(1...100)
@@ -58,6 +59,11 @@ struct ContentView: View {
                                             .resizable()
                                             .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .frame(width: 50, height: 50)
+                                        .rotation3DEffect(
+                                                       .degrees(rotation),
+                                                       axis: (x: 0.0, y: 1.0, z: 0.0)
+                                                   )
+                                        .padding()
                                         
                                     }else{
                                         RoundedRectangle(cornerRadius: 15)
@@ -67,6 +73,11 @@ struct ContentView: View {
                                                 Text("\(diceNumbersArray[index])")
                                                 
                                             }
+                                            .rotation3DEffect(
+                                                           .degrees(rotation),
+                                                           axis: (x: 0.0, y: 1.0, z: 0.0)
+                                                       )
+                                            .padding()
                                             
                                     }
                                 }
@@ -89,6 +100,10 @@ struct ContentView: View {
                             loadRolls()
                             roll.startTimer()
                             save()
+                            
+                            withAnimation(Animation.linear(duration: 1.5)) {
+                                   rotation += 360
+                               }
                            
                         }label:{
                             Text("Roll")
@@ -221,7 +236,7 @@ class Roll:ObservableObject{
        }
        
     func startTimer(){
-        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true){ [self]timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true){ [self]timer in
             withAnimation {
                 
                 for  i in 0..<diceNumberArray.count{
