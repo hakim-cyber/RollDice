@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @State private var diceNumber = 1
     @State  var diceNumbersArray = [1]
     @State var rotation = 0.0
@@ -72,6 +74,7 @@ struct ContentView: View {
                                             .frame(width: 50, height: 50)
                                             .overlay {
                                                     Text("\(diceNumbersArray[index])")
+                                                    .foregroundColor(.black)
                                             }
                                             .rotation3DEffect(
                                                            .degrees(rotation),
